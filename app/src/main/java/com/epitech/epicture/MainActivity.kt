@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
@@ -61,20 +62,14 @@ class MainActivity : AppCompatActivity() {
         val navView: NavigationView = findViewById(R.id.nav_view)
 
         //Edit image, cover and name from nav_drawer
-        val hView : View = navView.getHeaderView(0)
-        var navText : TextView = hView.findViewById(R.id.nav_name)
-        var navImage : ImageView = hView.findViewById(R.id.imageView)
-        navText.setText(preferences?.getString("username", null))
-        navText = hView.findViewById(R.id.nav_email)
-        navText.setText(preferences?.getString("email", null))
-        Picasso.get().load(preferences?.getString("avatar", null)).into(navImage)
+        drawerProfile(navView)
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_favorites                ,
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_favorites,
                 R.id.nav_send/*, R.id.nav_share, R.id.nav_tools*/
             ), drawerLayout
         )
@@ -110,6 +105,22 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun drawerProfile(navView : NavigationView) {
+        val hView : View = navView.getHeaderView(0)
+        val navText : TextView = hView.findViewById(R.id.nav_name)
+        val navEmail : TextView = hView.findViewById(R.id.nav_email)
+        val navImage : ImageView = hView.findViewById(R.id.imageView)
+
+        Log.d("DEBUG", "Displaying Avatar")
+        ImgurServices.getAvatar(this, {
+            runOnUiThread {
+                Picasso.get().load(it.data.avatar).into(navImage)
+                navText.text = it.data.username
+                navEmail.text = preferences?.getString("email", null)
+            }
+        },{})
     }
 }
 
