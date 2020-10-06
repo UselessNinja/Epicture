@@ -1,5 +1,6 @@
 package com.epitech.epicture
 
+import android.content.ContentQueryMap
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -51,10 +52,9 @@ object ImgurServices {
         editor?.clear()?.apply()
     }
 
-    /*** Saves the login data we get from the OAuth Query
-     *
+    /***
+     * Saves the login data we get from the OAuth Query
      */
-
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     fun saveLogin(intent: Intent, context: Context) {
         Log.d("DEBUG", "Login is being saved")
@@ -74,8 +74,8 @@ object ImgurServices {
     }
 
     /*** Verifies if the login data exists
-     * @resolve when it succeed
-     * @reject when it fails
+     * @param resolve when it succeed
+     * @param reject when it fails
      */
     fun verifyLogin(resolve: () -> Unit, reject: () -> Unit, context: Context) {
         Log.d("DEBUG", "Login is being verified")
@@ -101,8 +101,8 @@ object ImgurServices {
 
     /***
      * Refreshes the login data using the refresh token
-     * @resolve when it succeed
-     * @reject when it fails
+     * @param resolve when it succeed
+     * @param reject when it fails
      */
     fun refreshLogin(resolve: () -> Unit, reject: () -> Unit, context: Context) {
         Log.d("DEBUG", "Refreshing login")
@@ -152,7 +152,7 @@ object ImgurServices {
     // GETTERS FOR API-RELATED DATA
 
     /***
-     * Get image
+     * Get images
      */
     fun getImages(context: Context, success: (ImgurModels<ArrayList<Image>>) -> Unit, failure: (Exception) -> Unit, page : String = "0") {
         preferences = context.getSharedPreferences("data", 0)
@@ -188,9 +188,48 @@ object ImgurServices {
     }
 
     /***
+     * Search in the imgur api with query
+     */
+    fun search(context: Context, success: (ImgurModels<ArrayList<JsonElement>>) -> Unit, failure: (Exception) -> Unit,
+               searchQuery: String, sort: String = "time", window: String = "all", page: String = "0") {
+        preferences = context.getSharedPreferences("data", 0)
+
+        if (!preferences?.getBoolean("authenticated", false)!!)
+            throw IOException("You are not connected")
+
+        Log.d("DEBUG", "search")
+        val url = HttpUrl.Builder()
+            .scheme("https")
+            .host(host)
+            .addPathSegment(apiVersion)
+            .addPathSegment("gallery")
+            .addPathSegment("search")
+            .addPathSegment(sort)
+            .addPathSegment(window)
+            .addPathSegment(page)
+            .addQueryParameter("q", searchQuery)
+            .build()
+
+        val request = Request.Builder()
+            .url(url)
+            .header("Authorization", "Client-ID " + preferences?.getString("clientID", null))
+            .header("Authorization", "Bearer " + preferences?.getString("authToken", null))
+            .header("User-Agent", "Epicture")
+            .get()
+            .build()
+
+        val customResolve = { res: JsonElement ->
+            val type = object : TypeToken<ImgurModels<ArrayList<JsonElement>>>() {}.type
+            val data = Gson().fromJson<ImgurModels<ArrayList<JsonElement>>>(res.toString(), type)
+            success(data)
+        }
+        asynchronousRequest(request, customResolve, failure)
+    }
+
+    /***
      * Get the logged user avatar (authenticated)
-     * @success returns a model containing the Avatar
-     * @failure returns a java error
+     * @param success returns a model containing the Avatar
+     * @param failure returns a java error
      */
     fun getAvatar(context: Context, success: (ImgurModels<Avatar>) -> Unit, failure: (Exception) -> Unit) {
         preferences = context.getSharedPreferences("data", 0)
