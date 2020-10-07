@@ -1,9 +1,5 @@
 package com.epitech.epicture.jsonmodels
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-
-@Parcelize
 data class Image (
     val id : String?,
     val title : String?,
@@ -28,4 +24,4 @@ data class Image (
     val nsfw : Boolean?,
     val vote : String?,
     val in_gallery : Boolean?
-) : Parcelable
+)

@@ -5,15 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.epitech.epicture.GalleryAdapter
 import com.epitech.epicture.ImgurServices
 import com.epitech.epicture.R
-import com.epitech.epicture.jsonmodels.Image
+import com.epitech.epicture.jsonmodels.Converter
+import com.epitech.epicture.jsonmodels.ImgurPost
 import com.epitech.epicture.ui.RecyclerViewFragment
-import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : RecyclerViewFragment() {
 
@@ -21,7 +21,7 @@ class HomeFragment : RecyclerViewFragment() {
     private lateinit var root: View
     private lateinit var adapter: GalleryAdapter
     private var loading : Boolean = false
-    private var images: ArrayList<Image> = ArrayList()
+    private var images: ArrayList<ImgurPost> = ArrayList()
     private var page: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,6 +43,16 @@ class HomeFragment : RecyclerViewFragment() {
         infiniteScroll()
     }
 
+    private fun pruneUnreadableImages() {
+        if (images.isEmpty()) {
+            recycler_view.visibility = View.GONE
+            empty.visibility = View.VISIBLE
+        } else {
+            recycler_view.visibility = View.VISIBLE
+            empty.visibility = View.GONE
+        }
+    }
+
     private fun loadPages() {
         if (loading)
             return
@@ -52,6 +62,8 @@ class HomeFragment : RecyclerViewFragment() {
             getImagesFromPage(index) {
                 if(index == page) {
                     activity?.runOnUiThread {
+                        Log.d("DEBUG", "DataSetChanged")
+                        pruneUnreadableImages()
                         recyclerView.adapter?.notifyDataSetChanged()
                     }
                     loading = false
@@ -59,19 +71,21 @@ class HomeFragment : RecyclerViewFragment() {
             }
     }
 
-    private fun infiniteScroll() {
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+    private fun infiniteScroll() { recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1) && !loading) {
                     val size = images.size
                     loading = true
                     getImagesFromPage(page + 1) {
+                        Log.d("INFSCROLL", images.toString())
+                        Log.d("INFSCROLL", "$size > " + images.size.toString())
                         if (images.size > size) {
                             page += 1
                         }
                         loading = false
                         activity?.runOnUiThread {
+                            Log.d("DEBUG", "DataSetChanged")
                             recyclerView.adapter?.notifyDataSetChanged()
                         }
                     }
@@ -80,20 +94,23 @@ class HomeFragment : RecyclerViewFragment() {
         })
     }
 
+
+
     private fun getImagesFromPage(page: Int, callback: () -> Unit = {}) {
         ImgurServices.search( requireContext(), { resp ->
             try {
-                for(image in resp.data)
-                    images.add(Gson().fromJson(image, Image::class.java))
-                    Log.d("IMAGE", images.toString())
+                for(image in resp.data) {
+                    images.add(Converter.jsonElementToImgurPost(image))
+                    Log.d("IMAGE", Converter.jsonElementToImgurPost(image).toString())
+                }
                 images.distinctBy { it.id }
             } catch (e : Exception) {
-                Log.e("ERROR", "Failed to load images at page $page")
+                Log.e("ERROR", "Failed to load images at page $page -> $e")
             }
                 callback()
             }, {
-                Log.e("ERROR", "Failed to load images at page $page")
+                Log.e("ERROR", "Failed to load images at page $page -> $it")
                 callback()
-            }, "epitech")
+            }, "cats", page.toString(), "viral")
     }
 }

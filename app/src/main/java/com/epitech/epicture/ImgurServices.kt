@@ -191,13 +191,14 @@ object ImgurServices {
      * Search in the imgur api with query
      */
     fun search(context: Context, success: (ImgurModels<ArrayList<JsonElement>>) -> Unit, failure: (Exception) -> Unit,
-               searchQuery: String, sort: String = "time", window: String = "all", page: String = "0") {
+               searchQuery: String, page: String = "0", sort: String = "time", window: String = "all") {
         preferences = context.getSharedPreferences("data", 0)
 
         if (!preferences?.getBoolean("authenticated", false)!!)
             throw IOException("You are not connected")
 
         Log.d("DEBUG", "search")
+        Log.d("SEARCH", "Search: $searchQuery, Page: $page, Sort: $sort, Window: $window")
         val url = HttpUrl.Builder()
             .scheme("https")
             .host(host)
