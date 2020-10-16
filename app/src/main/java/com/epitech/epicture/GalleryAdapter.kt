@@ -40,7 +40,7 @@ class GalleryAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : 
         val imageView = holder.galleryImageView
 
         val picasso = Picasso.Builder(context).addRequestHandler(VideoRequestHandler()).build()
-            picasso.load(image.preview!!.toByteArray(Charsets.UTF_8).toString(Charsets.UTF_8))
+            picasso.load(image.preview)
             .placeholder(R.drawable.ic_menu_camera)
             .error(R.drawable.ic_menu_gallery).fit()
             .priority(Picasso.Priority.HIGH)

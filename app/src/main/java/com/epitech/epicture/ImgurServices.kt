@@ -14,6 +14,7 @@ import java.io.IOException
 import com.epitech.epicture.jsonmodels.Avatar
 import com.epitech.epicture.jsonmodels.Image
 import com.epitech.epicture.jsonmodels.ImgurModels
+import com.epitech.epicture.jsonmodels.ImgurPost
 import com.google.gson.reflect.TypeToken
 
 object ImgurServices {
@@ -35,7 +36,6 @@ object ImgurServices {
         Log.d("DEBUG", "Login is being requested")
 
         preferences = context.getSharedPreferences("data", 0)
-        editor = preferences?.edit()
 
         val url = "https://api.imgur.com/oauth2/authorize?client_id=" + preferences?.
             getString("clientID", null) + "&response_type=token"
@@ -209,6 +209,43 @@ object ImgurServices {
             .addPathSegment(window)
             .addPathSegment(page)
             .addQueryParameter("q", searchQuery)
+            .build()
+
+        val request = Request.Builder()
+            .url(url)
+            .header("Authorization", "Client-ID " + preferences?.getString("clientID", null))
+            .header("Authorization", "Bearer " + preferences?.getString("authToken", null))
+            .header("User-Agent", "Epicture")
+            .get()
+            .build()
+
+        val customResolve = { res: JsonElement ->
+            val type = object : TypeToken<ImgurModels<ArrayList<JsonElement>>>() {}.type
+            val data = Gson().fromJson<ImgurModels<ArrayList<JsonElement>>>(res.toString(), type)
+            success(data)
+        }
+        asynchronousRequest(request, customResolve, failure)
+    }
+
+    /***
+     * Get favorites
+     */
+    fun getFavorites(context: Context, success: (ImgurModels<ArrayList<JsonElement>>) -> Unit, failure: (Exception) -> Unit, page: String) {
+        preferences = context.getSharedPreferences("data", 0)
+
+        if (!preferences?.getBoolean("authenticated", false)!!)
+            throw IOException("You are not connected")
+
+        Log.d("DEBUG", "getFavorites")
+
+        val url = HttpUrl.Builder()
+            .scheme("https")
+            .host(host)
+            .addPathSegment(apiVersion)
+            .addPathSegment("account")
+            .addPathSegment(preferences?.getString("accountName", null)!!)
+            .addPathSegment("favorites")
+            .addPathSegment(page)
             .build()
 
         val request = Request.Builder()

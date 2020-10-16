@@ -94,8 +94,6 @@ class HomeFragment : RecyclerViewFragment() {
         })
     }
 
-
-
     private fun getImagesFromPage(page: Int, callback: () -> Unit = {}) {
         ImgurServices.search( requireContext(), { resp ->
             try {

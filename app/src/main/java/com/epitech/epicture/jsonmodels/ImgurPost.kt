@@ -1,6 +1,7 @@
 package com.epitech.epicture.jsonmodels
 
 import android.os.Parcelable
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import kotlinx.android.parcel.Parcelize
@@ -22,7 +23,8 @@ data class ImgurPost (
 
 enum class Type {
     ImagePost,
-    Album
+    Album,
+    Image
 }
 
 class Converter {
@@ -30,6 +32,9 @@ class Converter {
         fun jsonElementToImgurPost(element: JsonElement): ImgurPost {
             if (element.asJsonObject.has("images")) {
                 val content = Gson().fromJson<Album>(element, Album::class.java)
+                var preview = content.images?.get(0)?.link
+                if (content.cover != null)
+                    preview = "https://i.imgur.com/" + content.cover + ".jpg"
                 return ImgurPost(
                     content.id,
                     content.title,
@@ -38,7 +43,7 @@ class Converter {
                     content.vote,
                     content.views,
                     content.favorite,
-                    content.images?.get(0)?.link,
+                    preview,
                     content.images?.get(0)?.mp4,
                     element.toString(),
                     Type.Album
@@ -59,6 +64,21 @@ class Converter {
                     Type.ImagePost
                 )
             }
+        }
+        fun imageToImgurPost(element: Image): ImgurPost {
+            return ImgurPost(
+                element.id,
+                element.title,
+                null,
+                null,
+                element.vote,
+                element.views,
+                element.favorite,
+                element.link,
+                element.mp4,
+                element.toString(),
+                Type.Image
+            )
         }
     }
 }

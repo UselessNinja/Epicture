@@ -2,7 +2,7 @@ package com.epitech.epicture.jsonmodels
 
 data class Album (
     val id : String?,
-    val link: String?,
+    var link: String?,
     val views: Int?,
     val ups: Int?,
     val downs: Int?,
@@ -12,5 +12,6 @@ data class Album (
     var selected: Boolean = false,
     var favorite: Boolean?,
     val vote: String?,
-    var images: ArrayList<Image>?
+    var images: ArrayList<Image>?,
+    val cover: String?
 )
