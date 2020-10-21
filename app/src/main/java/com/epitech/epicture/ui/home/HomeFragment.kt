@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.epitech.epicture.GalleryAdapter
@@ -23,6 +24,18 @@ class HomeFragment : RecyclerViewFragment() {
     private var loading : Boolean = false
     private var images: ArrayList<ImgurPost> = ArrayList()
     private var page: Int = 0
+    private var query: String = "cats"
+
+    private var searching: Boolean = false
+        set(value) {
+            val old = field
+            field = value
+            if (value != old) {
+                page = 0
+                images.clear()
+                loadPages()
+            }
+        }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         root = inflater.inflate(R.layout.fragment_home, container, false)
@@ -59,7 +72,7 @@ class HomeFragment : RecyclerViewFragment() {
         images.clear()
         loading = true
         for (index in 0..page)
-            getImagesFromPage(index) {
+            getImagesFromPage(index, query) {
                 if(index == page) {
                     activity?.runOnUiThread {
                         Log.d("DEBUG", "DataSetChanged")
@@ -77,7 +90,7 @@ class HomeFragment : RecyclerViewFragment() {
                 if (!recyclerView.canScrollVertically(1) && !loading) {
                     val size = images.size
                     loading = true
-                    getImagesFromPage(page + 1) {
+                    getImagesFromPage(page + 1, query) {
                         Log.d("INFSCROLL", images.toString())
                         Log.d("INFSCROLL", "$size > " + images.size.toString())
                         if (images.size > size) {
@@ -94,7 +107,7 @@ class HomeFragment : RecyclerViewFragment() {
         })
     }
 
-    private fun getImagesFromPage(page: Int, callback: () -> Unit = {}) {
+    private fun getImagesFromPage(page: Int, searchQuery : String = "cats", callback: () -> Unit = {}) {
         ImgurServices.search( requireContext(), { resp ->
             try {
                 for(image in resp.data) {
@@ -109,6 +122,25 @@ class HomeFragment : RecyclerViewFragment() {
             }, {
                 Log.e("ERROR", "Failed to load images at page $page -> $it")
                 callback()
-            }, "cats", page.toString(), "viral")
+            }, searchQuery, page.toString(), "viral")
+    }
+
+    override fun getSearchListener(): SearchView.OnQueryTextListener {
+        return object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(searchQuery: String?): Boolean {
+                if (searchQuery != null)
+                    query = searchQuery
+                else
+                    query = "cats"
+                searching = true
+                return true
+            }
+            
+        }
     }
 }

@@ -41,8 +41,8 @@ class GalleryAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : 
 
         val picasso = Picasso.Builder(context).addRequestHandler(VideoRequestHandler()).build()
             picasso.load(image.preview)
-            .placeholder(R.drawable.ic_menu_camera)
-            .error(R.drawable.ic_menu_gallery).fit()
+            .placeholder(R.drawable.ic_loading)
+            .error(android.R.drawable.stat_notify_error).fit()
             .priority(Picasso.Priority.HIGH)
             .into(imageView)
     }
@@ -97,7 +97,7 @@ class GalleryAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : 
                 val canvas = Canvas(bitmapOverlay!!)
                 canvas.drawBitmap(bitmap, 0.0f, 0.0f, null)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    canvas.drawBitmap(context.resources.getDrawable(R.drawable.ic_menu_camera , context.theme).toBitmap(bitmap.width/2, bitmap.height/2), bitmap.width/4f, bitmap.height/4f, null)
+                    canvas.drawBitmap(context.resources.getDrawable(R.drawable.ic_play_arrow , context.theme).toBitmap(bitmap.width/2, bitmap.height/2), bitmap.width/4f, bitmap.height/4f, null)
                 }
             }
 

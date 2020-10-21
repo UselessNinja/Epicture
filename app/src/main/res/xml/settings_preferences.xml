@@ -1,12 +1,7 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
-        app:key="@string/disconnect"
-        app:title="@string/disconnect"
-        app:summary="@string/disconnect_summary"
-        app:icon="@android:drawable/ic_menu_delete"/>
 
-    <!--<PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory app:title="@string/messages_header">
 
         <EditTextPreference
             app:key="signature"
@@ -36,6 +31,6 @@
             app:summaryOn="@string/attachment_summary_on"
             app:title="@string/attachment_title" />
 
-    </PreferenceCategory> -->
+    </PreferenceCategory>
 
 </PreferenceScreen>

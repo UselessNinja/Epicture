@@ -43,6 +43,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.ZoomActivity"/>
+        <activity android:name=".ui.send.SendActivity"/>
     </application>
 
 </manifest>

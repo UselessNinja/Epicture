@@ -4,6 +4,7 @@ import android.content.ContentQueryMap
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
@@ -16,6 +17,9 @@ import com.epitech.epicture.jsonmodels.Image
 import com.epitech.epicture.jsonmodels.ImgurModels
 import com.epitech.epicture.jsonmodels.ImgurPost
 import com.google.gson.reflect.TypeToken
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.ByteArrayOutputStream
 
 object ImgurServices {
 
@@ -337,5 +341,42 @@ object ImgurServices {
                 return failure(e)
             }
         })
+    }
+
+    fun upload(context: Context, success: (JsonElement) -> Unit, failure: (Exception) -> Unit, name: String, title: String, description: String, image: Bitmap) {
+        preferences = context.getSharedPreferences("data", 0)
+
+        if (!preferences?.getBoolean("authenticated", false)!!)
+            throw IOException("You are not connected")
+
+        val baos = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.PNG, 100, baos)
+
+        Thread(Runnable {
+            val url = HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment(apiVersion)
+                .addPathSegment("image")
+                .build()
+
+            val body = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("image", "image.jpg", baos.toByteArray().toRequestBody("image/*jpg".toMediaTypeOrNull(), 0))
+                .addFormDataPart("title", title)
+                .addFormDataPart("description", description)
+                .addFormDataPart("name", name)
+                .build()
+
+            val request = Request.Builder()
+                .url(url)
+                .header("Authorization", "Client-ID " + preferences?.getString("clientID", null))
+                .header("Authorization", "Bearer " + preferences?.getString("authToken", null))
+                .header("User-Agent", "Epicture")
+                .post(body)
+                .build()
+            
+            asynchronousRequest(request, success, failure)
+        }).start()
     }
 }

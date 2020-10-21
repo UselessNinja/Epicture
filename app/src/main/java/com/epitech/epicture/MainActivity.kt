@@ -1,6 +1,8 @@
 package com.epitech.epicture
 
 import android.annotation.SuppressLint
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
@@ -11,6 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +26,6 @@ import androidx.navigation.ui.navigateUp
 import com.epitech.epicture.ui.favorites.FavoritesFragment
 import com.epitech.epicture.ui.gallery.GalleryFragment
 import com.epitech.epicture.ui.home.HomeFragment
-import com.epitech.epicture.ui.send.SendFragment
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
@@ -35,6 +37,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var actionBarDrawerToggle : ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var searchView: SearchView
+    private lateinit var menuView: Menu
 
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +77,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        menuView = menu
+
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView = menu.findItem(R.id.app_bar_search).actionView as SearchView
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.maxWidth = Integer.MAX_VALUE
+
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        val t = supportFragmentManager.beginTransaction()
+        t.replace(R.id.nav_host_fragment, HomeFragment())
+        t.commit()
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onPostCreate(savedInstanceState, persistentState)
         actionBarDrawerToggle.syncState()
@@ -81,35 +105,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         actionBarDrawerToggle.onConfigurationChanged(newConfig)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-
-        // TODO Make the searchbar work
-        /*val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.search).actionView as SearchView).apply {
-            setSearchableInfo(searchManager.getSearchableInfo(componentName))
-            // https://developer.android.com/training/search/setup
-            // TODO SearchActivity and gallery
-        }*/
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true
-        }
-        return when (item.itemId) {
-            R.id.action_settings -> {
-                val intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -161,15 +156,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 t.replace(R.id.nav_host_fragment, FavoritesFragment())
                 t.commit()
             }
-            R.id.nav_send -> {
-                supportActionBar?.setDisplayShowTitleEnabled(false)
-                val t = supportFragmentManager.beginTransaction()
-                t.replace(R.id.nav_host_fragment, SendFragment())
-                t.commit()
+            R.id.nav_send_gallery -> {
+                Upload.getImageFromGallery(this)
+            }
+            R.id.nav_send_camera -> {
+                Upload.getImageFromCamera(this)
+            }
+            R.id.nav_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_disconnect -> {
+                ImgurServices.pruneLogin(this)
+                finish()
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Upload.onActivityResult(this, requestCode, resultCode, data)
+    }
+
+    fun getSearchView() : SearchView {
+        return menuView.findItem(R.id.app_bar_search).actionView as SearchView
+    }
+
 }
 

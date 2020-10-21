@@ -29,6 +29,11 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="disconnect">disconnect</string>
+    <string name="disconnect">Disconnect</string>
     <string name="disconnect_summary">Disconnects the current user.</string>
+    <string name="upload">Upload</string>
+    <string name="from_camera">From Camera</string>
+    <string name="from_gallery">From Gallery</string>
+    <string name="settings">Settings</string>
+    <string name="search">Search</string>
 </resources>

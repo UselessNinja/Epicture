@@ -2,6 +2,7 @@ package com.epitech.epicture.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.epitech.epicture.R
@@ -25,7 +26,7 @@ class ZoomActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
+        Log.d("ZOOM", image.toString())
         Picasso.get()
             .load(image.preview)
             .placeholder(R.drawable.ic_menu_camera)
