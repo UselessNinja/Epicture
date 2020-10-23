@@ -34,6 +34,7 @@ class HomeFragment : RecyclerViewFragment() {
                 page = 0
                 images.clear()
                 loadPages()
+                searching = false
             }
         }
 
@@ -128,17 +129,15 @@ class HomeFragment : RecyclerViewFragment() {
     override fun getSearchListener(): SearchView.OnQueryTextListener {
         return object : SearchView.OnQueryTextListener {
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-
             override fun onQueryTextSubmit(searchQuery: String?): Boolean {
-                if (searchQuery != null)
-                    query = searchQuery
-                else
-                    query = "cats"
+                Log.d("SEARCHVIEW", searchQuery)
+                query = searchQuery!!
                 searching = true
                 return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
             }
             
         }

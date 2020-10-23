@@ -1,5 +1,6 @@
 package com.epitech.epicture.ui
 
+import android.app.Activity
 import android.os.Bundle
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -11,8 +12,9 @@ open class RecyclerViewFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //searchView = MainActivity().getSearchView()
-        //searchView.setOnQueryTextListener(getSearchListener())
+        val activity = (activity as MainActivity)
+        searchView = activity.getSearchView().search
+        searchView.setOnQueryTextListener(getSearchListener())
     }
 
     open fun getSearchListener(): SearchView.OnQueryTextListener {

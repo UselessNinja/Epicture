@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.epitech.epicture.GalleryAdapter
@@ -110,5 +111,19 @@ class GalleryFragment : RecyclerViewFragment() {
             Log.e("ERROR", "Failed to load images at page $page -> $it")
             callback()
         }, page.toString())
+    }
+
+    override fun getSearchListener(): SearchView.OnQueryTextListener {
+        return object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(searchQuery: String?): Boolean {
+                Log.d("SEARCHVIEW", searchQuery)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        }
     }
 }

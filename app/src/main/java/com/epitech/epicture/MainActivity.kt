@@ -38,7 +38,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var actionBarDrawerToggle : ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var searchView: SearchView
-    private lateinit var menuView: Menu
+    private lateinit var _menu: Menu
+
+    inner class MenuManager(actionMenu: Menu, val supportActionBar: androidx.appcompat.app.ActionBar?) {
+
+        val search: SearchView = actionMenu.findItem(R.id.app_bar_search).actionView as SearchView
+
+        init {
+            if (!searchView.isIconified) {
+                searchView.isIconified = true
+            }
+        }
+    }
+
+    fun getSearchView() : MenuManager {
+        Log.d("sv", "menu get")
+        return MenuManager(_menu, supportActionBar)
+    }
 
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,19 +89,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerProfile(navView)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_hamburger_24dp)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
-        menuView = menu
+        _menu = menu
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         searchView = menu.findItem(R.id.app_bar_search).actionView as SearchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.maxWidth = Integer.MAX_VALUE
-
         return true
     }
 
@@ -94,7 +108,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val t = supportFragmentManager.beginTransaction()
         t.replace(R.id.nav_host_fragment, HomeFragment())
         t.commit()
-        return super.onPrepareOptionsMenu(menu)
+        super.onPrepareOptionsMenu(menu)
+        _menu = menu!!
+        return true
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
@@ -180,9 +196,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Upload.onActivityResult(this, requestCode, resultCode, data)
     }
 
-    fun getSearchView() : SearchView {
-        return menuView.findItem(R.id.app_bar_search).actionView as SearchView
-    }
-
+    /***
+     * Documentation pour quelqu'un qui doit reprendre le projet
+     */
 }
 
