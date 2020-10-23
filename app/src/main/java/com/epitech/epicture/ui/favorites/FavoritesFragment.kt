@@ -26,6 +26,7 @@ class FavoritesFragment : RecyclerViewFragment() {
     private var page: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        searchView.visibility = SearchView.INVISIBLE
         root = inflater.inflate(R.layout.fragment_favorites, container, false)
         return root
     }

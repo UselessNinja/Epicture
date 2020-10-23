@@ -39,6 +39,7 @@ class HomeFragment : RecyclerViewFragment() {
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        searchView.visibility = SearchView.VISIBLE
         root = inflater.inflate(R.layout.fragment_home, container, false)
         return root
     }
