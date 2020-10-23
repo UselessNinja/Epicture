@@ -1,6 +1,5 @@
 package com.epitech.epicture
 
-import android.content.ContentQueryMap
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,14 +7,11 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
+import com.epitech.epicture.jsonmodels.*
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import okhttp3.*
 import java.io.IOException
-import com.epitech.epicture.jsonmodels.Avatar
-import com.epitech.epicture.jsonmodels.Image
-import com.epitech.epicture.jsonmodels.ImgurModels
-import com.epitech.epicture.jsonmodels.ImgurPost
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -341,6 +337,53 @@ object ImgurServices {
                 return failure(e)
             }
         })
+    }
+
+    fun changeFavoriteState(context: Context, success: (JsonElement) -> Unit, failure: (Exception) -> Unit, id: String, type: Type) {
+        preferences = context.getSharedPreferences("data", 0)
+
+        if (!preferences?.getBoolean("authenticated", false)!!)
+            throw IOException("You are not connected")
+
+        var request: Request
+
+        if (type == Type.ImagePost || type == Type.Image) {
+            val url = HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment(apiVersion)
+                .addPathSegment("image")
+                .addPathSegment(id)
+                .addPathSegment("favorite")
+                .build()
+
+            request = Request.Builder()
+                .url(url)
+                .header("Authorization", "Client-ID " + preferences?.getString("clientID", null))
+                .header("Authorization", "Bearer " + preferences?.getString("authToken", null))
+                .header("User-Agent", "Epicture")
+                .post("".toRequestBody(null))
+                .build()
+
+        } else {
+            val url = HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment(apiVersion)
+                .addPathSegment("album")
+                .addPathSegment(id)
+                .addPathSegment("favorite")
+                .build()
+
+            request = Request.Builder()
+                .url(url)
+                .header("Authorization", "Client-ID " + preferences?.getString("clientID", null))
+                .header("Authorization", "Bearer " + preferences?.getString("authToken", null))
+                .header("User-Agent", "Epicture")
+                .post("".toRequestBody(null))
+                .build()
+        }
+        asynchronousRequest(request, success, failure)
     }
 
     fun upload(context: Context, success: (JsonElement) -> Unit, failure: (Exception) -> Unit, name: String, title: String, description: String, image: Bitmap) {
