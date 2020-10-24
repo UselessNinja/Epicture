@@ -9,7 +9,15 @@
         android:adjustViewBounds="true"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:layout_margin="2dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"/>
 
 </LinearLayout>

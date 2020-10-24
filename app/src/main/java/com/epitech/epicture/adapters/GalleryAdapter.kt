@@ -1,13 +1,10 @@
-package com.epitech.epicture
+package com.epitech.epicture.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
 import android.media.MediaMetadataRetriever
 import android.os.Build
 import android.util.Log
@@ -17,33 +14,35 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
+import com.epitech.epicture.R
 import com.epitech.epicture.jsonmodels.FilterType
-import com.epitech.epicture.jsonmodels.ImgurModels
 import com.epitech.epicture.jsonmodels.ImgurPost
-import com.epitech.epicture.jsonmodels.Type
 import com.epitech.epicture.ui.ZoomActivity
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler
+import org.w3c.dom.Text
 
 class GalleryAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : RecyclerView.Adapter<GalleryAdapter._ViewHolder>(), Filterable {
 
     var images = gallery
 
-    @SuppressLint("ResourceType")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): _ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val imageView = inflater.inflate(R.xml.item_image, parent, false)
+        val imageView = inflater.inflate(R.layout.item_image, parent, false)
         return _ViewHolder(imageView)
     }
 
     override fun onBindViewHolder(holder: _ViewHolder, position: Int) {
         val image = images[position]
         val imageView = holder.galleryImageView
+        val textView = holder.titleTextView
+        textView.setText(image.title)
 
         val picasso = Picasso.Builder(context).addRequestHandler(VideoRequestHandler()).build()
             picasso.load(image.preview)
@@ -60,6 +59,7 @@ class GalleryAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : 
     inner class _ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         var galleryImageView: ImageView = itemView.findViewById(R.id.image)
+        var titleTextView: TextView = itemView.findViewById(R.id.title)
 
         init {
             itemView.setOnClickListener(this)

@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.epitech.epicture.GalleryAdapter
+import com.epitech.epicture.adapters.GalleryAdapter
 import com.epitech.epicture.ImgurServices
 import com.epitech.epicture.R
 import com.epitech.epicture.jsonmodels.Converter
 import com.epitech.epicture.jsonmodels.FilterType
 import com.epitech.epicture.jsonmodels.ImgurPost
-import com.epitech.epicture.jsonmodels.Type
 import com.epitech.epicture.ui.RecyclerViewFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -145,11 +144,12 @@ class FavoritesFragment : RecyclerViewFragment() {
 
             override fun onQueryTextSubmit(searchQuery: String?): Boolean {
                 adapter.filter.filter(searchQuery)
-                return false
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                adapter.filter.filter(newText)
+                return true
             }
         }
     }

@@ -9,10 +9,9 @@ import android.widget.SearchView
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.epitech.epicture.GalleryAdapter
 import com.epitech.epicture.ImgurServices
 import com.epitech.epicture.R
-import com.epitech.epicture.SearchAdapter
+import com.epitech.epicture.adapters.SearchAdapter
 import com.epitech.epicture.jsonmodels.Converter
 import com.epitech.epicture.jsonmodels.ImgurPost
 import com.epitech.epicture.ui.RecyclerViewFragment

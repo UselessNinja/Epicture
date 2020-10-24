@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.epitech.epicture.ImgurServices
@@ -13,6 +14,7 @@ import com.epitech.epicture.jsonmodels.Converter
 import com.epitech.epicture.jsonmodels.ImgurPost
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
+import org.w3c.dom.Text
 
 class ZoomActivity : AppCompatActivity() {
     companion object { val EXTRA = "ZoomActivity.EXTRA" }
@@ -20,6 +22,8 @@ class ZoomActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private lateinit var image: ImgurPost
     private lateinit var favoriteButton: ImageButton
+    private lateinit var titleView: TextView
+    private lateinit var viewView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +32,8 @@ class ZoomActivity : AppCompatActivity() {
         image = intent.getParcelableExtra(EXTRA)
         imageView = findViewById(R.id.image_zoom)
         favoriteButton = findViewById(R.id.favorite_button)
+        titleView = findViewById(R.id.title_zoom)
+        viewView = findViewById(R.id.view_zoom)
     }
 
     override fun onStart() {
@@ -43,6 +49,8 @@ class ZoomActivity : AppCompatActivity() {
             favoriteButton.setBackgroundResource(R.drawable.ic_favorite_24px)
         else
             favoriteButton.setBackgroundResource(R.drawable.ic_favorite_border_24px)
+        titleView.setText(image.title)
+        viewView.setText(image.vote)
     }
 
     fun favorite(view : View) {
