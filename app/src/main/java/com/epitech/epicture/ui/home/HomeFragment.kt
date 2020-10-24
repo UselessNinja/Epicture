@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.epitech.epicture.GalleryAdapter
 import com.epitech.epicture.ImgurServices
 import com.epitech.epicture.R
+import com.epitech.epicture.SearchAdapter
 import com.epitech.epicture.jsonmodels.Converter
 import com.epitech.epicture.jsonmodels.ImgurPost
 import com.epitech.epicture.ui.RecyclerViewFragment
@@ -20,7 +22,7 @@ class HomeFragment : RecyclerViewFragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var root: View
-    private lateinit var adapter: GalleryAdapter
+    private lateinit var adapter: SearchAdapter
     private var loading : Boolean = false
     private var images: ArrayList<ImgurPost> = ArrayList()
     private var page: Int = 0
@@ -40,6 +42,9 @@ class HomeFragment : RecyclerViewFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         searchView.visibility = SearchView.VISIBLE
+        menuManager.searchItem.isVisible = true
+        menuManager.filter.visibility = Spinner.INVISIBLE
+        menuManager.filterItem.isVisible = false
         root = inflater.inflate(R.layout.fragment_home, container, false)
         return root
     }
@@ -50,12 +55,18 @@ class HomeFragment : RecyclerViewFragment() {
     }
 
     private fun createRecyclerView () {
-        adapter = GalleryAdapter(context!!, images)
+        adapter = SearchAdapter(context!!, images)
         recyclerView = root.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
         loadPages()
         infiniteScroll()
+        menuManager.refresh.isVisible = true
+        menuManager.refresh.setOnMenuItemClickListener {
+            if (query != "cats")
+                loadPages()
+            return@setOnMenuItemClickListener true
+        }
     }
 
     private fun pruneUnreadableImages() {
@@ -143,4 +154,6 @@ class HomeFragment : RecyclerViewFragment() {
             
         }
     }
+
+
 }

@@ -405,7 +405,7 @@ object ImgurServices {
 
             val body = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("image", "image.jpg", baos.toByteArray().toRequestBody("image/*jpg".toMediaTypeOrNull(), 0))
+                .addFormDataPart("image", "image.png", baos.toByteArray().toRequestBody("image/*png".toMediaTypeOrNull(), 0))
                 .addFormDataPart("title", title)
                 .addFormDataPart("description", description)
                 .addFormDataPart("name", name)

@@ -7,4 +7,17 @@
         android:title="@string/search"
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
+
+    <item
+        android:id="@+id/app_bar_refresh"
+        android:icon="@drawable/ic_refresh_24dp"
+        android:title="@string/reload_the_gallery"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/app_bar_filter"
+        android:padding="0dip"
+        app:actionViewClass="android.widget.Spinner"
+        android:title="@string/filter" app:showAsAction="always"/>
+
 </menu>

@@ -21,6 +21,12 @@ data class ImgurPost (
     val type: Type
 ) : Parcelable
 
+enum class FilterType {
+    NONE,
+    IMAGE,
+    VIDEO
+}
+
 enum class Type {
     ImagePost,
     Album,

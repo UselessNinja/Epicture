@@ -9,4 +9,10 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="image_types">
+        <item>Everything</item>
+        <item>Images</item>
+        <item>Gif/Videos</item>
+    </string-array>
 </resources>

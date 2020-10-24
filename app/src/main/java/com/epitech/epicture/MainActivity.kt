@@ -12,9 +12,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.SearchView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -43,15 +41,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     inner class MenuManager(actionMenu: Menu, val supportActionBar: androidx.appcompat.app.ActionBar?) {
 
         val search: SearchView = actionMenu.findItem(R.id.app_bar_search).actionView as SearchView
+        val refresh: MenuItem = actionMenu.findItem(R.id.app_bar_refresh)
+        val filter: Spinner = actionMenu.findItem(R.id.app_bar_filter).actionView as Spinner
+        val filterItem : MenuItem = actionMenu.findItem(R.id.app_bar_filter)
+        val searchItem : MenuItem = actionMenu.findItem(R.id.app_bar_search)
 
         init {
             if (!searchView.isIconified) {
                 searchView.isIconified = true
             }
+            filter.setSelection(0)
         }
     }
 
-    fun getSearchView() : MenuManager {
+    fun getMenuManager() : MenuManager {
         Log.d("sv", "menu get")
         return MenuManager(_menu, supportActionBar)
     }
@@ -100,6 +103,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         searchView = menu.findItem(R.id.app_bar_search).actionView as SearchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.maxWidth = Integer.MAX_VALUE
+
+        val filter : Spinner = menu.findItem(R.id.app_bar_filter).actionView as Spinner
+        val spinnerAdapter : SpinnerAdapter = ArrayAdapter.createFromResource(supportActionBar?.themedContext!!, R.array.image_types, android.R.layout.simple_spinner_dropdown_item)
+        filter.adapter = spinnerAdapter
         return true
     }
 

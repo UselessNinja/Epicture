@@ -5,13 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.epitech.epicture.GalleryAdapter
 import com.epitech.epicture.ImgurServices
 import com.epitech.epicture.R
 import com.epitech.epicture.jsonmodels.Converter
+import com.epitech.epicture.jsonmodels.FilterType
 import com.epitech.epicture.jsonmodels.ImgurPost
 import com.epitech.epicture.ui.RecyclerViewFragment
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -26,7 +27,26 @@ class GalleryFragment : RecyclerViewFragment() {
     private var page: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        searchView.visibility = SearchView.INVISIBLE
+        searchView.visibility = SearchView.VISIBLE
+        menuManager.searchItem.isVisible = true
+        menuManager.filter.visibility = Spinner.VISIBLE
+        menuManager.filterItem.isVisible = true
+        menuManager.filter.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                if (images.size == 0)
+                    return
+                adapter.filter(FilterType.NONE)
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (images.size == 0)
+                    return
+                when(position) {
+                    0 -> adapter.filter(FilterType.NONE)
+                    1 -> adapter.filter(FilterType.IMAGE)
+                    2 -> adapter.filter(FilterType.VIDEO)
+                }
+            }
+        }
         root = inflater.inflate(R.layout.fragment_gallery, container, false)
         return root
     }
@@ -43,6 +63,11 @@ class GalleryFragment : RecyclerViewFragment() {
         recyclerView.adapter = adapter
         loadPages()
         infiniteScroll()
+        menuManager.refresh.isVisible = true
+        menuManager.refresh.setOnMenuItemClickListener {
+            loadPages()
+            return@setOnMenuItemClickListener true
+        }
     }
 
     private fun pruneUnreadableImages() {
@@ -118,7 +143,7 @@ class GalleryFragment : RecyclerViewFragment() {
         return object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(searchQuery: String?): Boolean {
-                Log.d("SEARCHVIEW", searchQuery)
+                adapter.filter.filter(searchQuery)
                 return true
             }
 

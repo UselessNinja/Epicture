@@ -37,4 +37,6 @@
     <string name="settings">Settings</string>
     <string name="search">Search</string>
     <string name="favorite">Favorite</string>
+    <string name="filter">Filter</string>
+    <string name="reload_the_gallery">Reload the gallery</string>
 </resources>
