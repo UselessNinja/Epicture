@@ -39,4 +39,5 @@
     <string name="favorite">Favorite</string>
     <string name="filter">Filter</string>
     <string name="reload_the_gallery">Reload the gallery</string>
+    <string name="login">Login</string>
 </resources>
