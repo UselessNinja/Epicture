@@ -53,7 +53,7 @@ class ZoomActivity : AppCompatActivity() {
         else
             favoriteButton.setBackgroundResource(R.drawable.ic_favorite_border_24px)
         titleView.setText(image.title)
-        viewView.setText(image.vote)
+        viewView.setText(image.totalViews.toString() + " views")
     }
 
     /***

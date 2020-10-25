@@ -186,10 +186,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_send_camera -> {
                 Upload.getImageFromCamera(this)
             }
+            /* TODO Implement settings properly
             R.id.nav_settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
-            }
+            } */
             R.id.nav_disconnect -> {
                 ImgurServices.pruneLogin(this)
                 finish()

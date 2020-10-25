@@ -53,7 +53,8 @@ class Converter {
          * @return ImgurPost
          */
         fun jsonElementToImgurPost(element: JsonElement): ImgurPost {
-            if (element.asJsonObject.has("images")) {
+            Log.d("favorite", element.asJsonObject.get("is_album").asString)
+            if (element.asJsonObject.has("images") && element.asJsonObject.get("is_album").asBoolean) {
                 val content = Gson().fromJson<Album>(element, Album::class.java)
                 var preview = content.images?.get(0)?.link
                 if (content.cover != null)
@@ -73,6 +74,9 @@ class Converter {
                 )
             } else {
                 val content = Gson().fromJson<ImagePost>(element, ImagePost::class.java)
+                var preview = content.link
+                if (content.cover != null)
+                    preview = "https://i.imgur.com/" + content.cover + ".jpg"
                 return ImgurPost(
                     content.id,
                     content.title,
@@ -81,7 +85,7 @@ class Converter {
                     content.vote,
                     content.views,
                     content.favorite,
-                    content.link,
+                    preview,
                     content.mp4,
                     element.toString(),
                     Type.ImagePost

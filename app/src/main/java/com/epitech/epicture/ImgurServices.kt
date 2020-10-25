@@ -416,6 +416,7 @@ object ImgurServices {
                 .post("".toRequestBody(null))
                 .build()
         }
+        Log.d("favorite", type.toString() + " " + request.toString())
         asynchronousRequest(request, success, failure)
     }
 

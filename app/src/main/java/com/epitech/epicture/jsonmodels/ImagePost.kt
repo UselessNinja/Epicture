@@ -5,6 +5,7 @@ package com.epitech.epicture.jsonmodels
  */
 data class ImagePost (
     val id : String?,
+    val cover : String?,
     val link: String?,
     val mp4: String?,
     val views: Int,
