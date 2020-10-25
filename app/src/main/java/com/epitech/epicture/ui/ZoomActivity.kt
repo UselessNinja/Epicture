@@ -52,7 +52,7 @@ class ZoomActivity : AppCompatActivity() {
             favoriteButton.setBackgroundResource(R.drawable.ic_favorite_24px)
         else
             favoriteButton.setBackgroundResource(R.drawable.ic_favorite_border_24px)
-        titleView.setText(image.title)
+        titleView.text = image.title ?: "Untitled"
         viewView.setText(image.totalViews.toString() + " views")
     }
 
@@ -67,13 +67,20 @@ class ZoomActivity : AppCompatActivity() {
             favoriteButton.setBackgroundResource(R.drawable.ic_favorite_24px)
         ImgurServices.changeFavoriteState(this, {
             Log.d("ZOOM", "it: " + it.toString())
-            if (it.asJsonObject.get("data").asString == "favorited")
+            if (it.asJsonObject.get("data").asString == "favorited") {
                 favoriteButton.setBackgroundResource(R.drawable.ic_favorite_24px)
-            else
+                runOnUiThread {
+                    Toast.makeText(this, "Added to Favorites!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
                 favoriteButton.setBackgroundResource(R.drawable.ic_favorite_border_24px)
+                runOnUiThread {
+                    Toast.makeText(this, "Removed from Favorites!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }, {
             e -> runOnUiThread {
-            Toast.makeText(this, "couldn't favorite/unfavorite : $e", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "couldn't favorite/unfavorite : $e", Toast.LENGTH_SHORT).show()
             }
         }, image.id!!, image.type)
     }

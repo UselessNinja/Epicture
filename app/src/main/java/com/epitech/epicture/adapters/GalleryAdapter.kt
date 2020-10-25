@@ -43,7 +43,7 @@ class GalleryAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : 
         val image = images[position]
         val imageView = holder.galleryImageView
         val textView = holder.titleTextView
-        textView.setText(image.title)
+        textView.text = image.title ?: "Untitled"
 
         val picasso = Picasso.Builder(context).addRequestHandler(VideoRequestHandler()).build()
             picasso.load(image.preview)

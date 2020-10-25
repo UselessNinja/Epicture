@@ -40,4 +40,6 @@
     <string name="filter">Filter</string>
     <string name="reload_the_gallery">Reload the gallery</string>
     <string name="login">Login</string>
+    <string name="titletitle">Title</string>
+    <string name="descriptiondescription">Description</string>
 </resources>
