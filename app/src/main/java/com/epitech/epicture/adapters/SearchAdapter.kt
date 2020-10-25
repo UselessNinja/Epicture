@@ -43,7 +43,7 @@ class SearchAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : R
         val picasso = Picasso.Builder(context).addRequestHandler(VideoRequestHandler()).build()
             picasso.load(image.preview)
             .placeholder(R.drawable.ic_loading)
-            .error(android.R.drawable.stat_notify_error).fit()
+            .error(R.drawable.ic_error_24dp).fit()
             .priority(Picasso.Priority.HIGH)
             .into(imageView)
     }

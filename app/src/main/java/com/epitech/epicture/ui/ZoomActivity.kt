@@ -45,7 +45,7 @@ class ZoomActivity : AppCompatActivity() {
         Picasso.get()
             .load(image.preview)
             .placeholder(R.drawable.ic_menu_camera)
-            .error(R.drawable.ic_menu_gallery)
+            .error(R.drawable.ic_error_24dp)
             .fit()
             .into(imageView)
         if (image.favorite!!)
