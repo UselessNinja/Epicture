@@ -1,0 +1,11 @@
+$dokka.format:html
+$dokka.linkExtension:html
+
+com.epitech.epicture
+com.epitech.epicture.adapters
+com.epitech.epicture.jsonmodels
+com.epitech.epicture.ui
+com.epitech.epicture.ui.favorites
+com.epitech.epicture.ui.gallery
+com.epitech.epicture.ui.home
+com.epitech.epicture.ui.send

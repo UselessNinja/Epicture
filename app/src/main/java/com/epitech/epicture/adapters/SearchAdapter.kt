@@ -1,6 +1,5 @@
 package com.epitech.epicture.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -23,7 +22,9 @@ import com.squareup.picasso.Picasso
 import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler
 
-
+/***
+ * Adapter for the RecyclerView of the Home Fragment
+ */
 class SearchAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : RecyclerView.Adapter<SearchAdapter._ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): _ViewHolder {
@@ -72,6 +73,9 @@ class SearchAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : R
         }
     }
 
+    /***
+     * Handler for making custom thumbnails for .mp4 images/albums
+     */
     inner class VideoRequestHandler : RequestHandler() {
 
         override fun canHandleRequest(data: Request?): Boolean {

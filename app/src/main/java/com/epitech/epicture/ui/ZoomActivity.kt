@@ -16,6 +16,9 @@ import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import org.w3c.dom.Text
 
+/***
+ * Class containing everything inside the posts
+ */
 class ZoomActivity : AppCompatActivity() {
     companion object { val EXTRA = "ZoomActivity.EXTRA" }
 
@@ -53,6 +56,10 @@ class ZoomActivity : AppCompatActivity() {
         viewView.setText(image.vote)
     }
 
+    /***
+     * Allows the user to favorite/unfavorite an image by pressing the heart button
+     * @param view (unused)
+     */
     fun favorite(view : View) {
         if (image.favorite!!)
             favoriteButton.setBackgroundResource(R.drawable.ic_favorite_border_24px)

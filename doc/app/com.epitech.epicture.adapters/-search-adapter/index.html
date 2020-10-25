@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SearchAdapter - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.epitech.epicture.adapters</a>&nbsp;/&nbsp;<a href="./index.html">SearchAdapter</a><br/>
+<br/>
+<h1>SearchAdapter</h1>
+<code><span class="keyword">class </span><span class="identifier">SearchAdapter</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Adapter</span><span class="symbol">&lt;</span><a href="_-view-holder/index.html"><span class="identifier">_ViewHolder</span></a><span class="symbol">&gt;</span></code><ul><li></li>
+</ul>
+<p>Adapter for the RecyclerView of the Home Fragment</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-video-request-handler/index.html">VideoRequestHandler</a></p>
+</td>
+<td>
+<code><span class="keyword">inner</span> <span class="keyword">class </span><span class="identifier">VideoRequestHandler</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">RequestHandler</span></code><ul><li></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="_-view-holder/index.html">_ViewHolder</a></p>
+</td>
+<td>
+<code><span class="keyword">inner</span> <span class="keyword">class </span><span class="identifier">_ViewHolder</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ViewHolder</span><span class="symbol">, </span><a href="https://developer.android.com/reference/android/view/View/OnClickListener.html"><span class="identifier">OnClickListener</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SearchAdapter</span><span class="symbol">(</span><span class="identifier" id="com.epitech.epicture.adapters.SearchAdapter$<init>(android.content.Context, java.util.ArrayList((com.epitech.epicture.jsonmodels.ImgurPost)))/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier" id="com.epitech.epicture.adapters.SearchAdapter$<init>(android.content.Context, java.util.ArrayList((com.epitech.epicture.jsonmodels.ImgurPost)))/gallery">gallery</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-array-list/index.html"><span class="identifier">ArrayList</span></a><span class="symbol">&lt;</span><a href="../../com.epitech.epicture.jsonmodels/-imgur-post/index.html"><span class="identifier">ImgurPost</span></a><span class="symbol">&gt;</span><span class="symbol">)</span></code><ul><li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="context.html">context</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">context</span><span class="symbol">: </span><a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="gallery.html">gallery</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">gallery</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-array-list/index.html"><span class="identifier">ArrayList</span></a><span class="symbol">&lt;</span><a href="../../com.epitech.epicture.jsonmodels/-imgur-post/index.html"><span class="identifier">ImgurPost</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="get-item-count.html">getItemCount</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getItemCount</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="on-bind-view-holder.html">onBindViewHolder</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onBindViewHolder</span><span class="symbol">(</span><span class="identifier" id="com.epitech.epicture.adapters.SearchAdapter$onBindViewHolder(com.epitech.epicture.adapters.SearchAdapter._ViewHolder, kotlin.Int)/holder">holder</span><span class="symbol">:</span>&nbsp;<a href="_-view-holder/index.html"><span class="identifier">_ViewHolder</span></a><span class="symbol">, </span><span class="identifier" id="com.epitech.epicture.adapters.SearchAdapter$onBindViewHolder(com.epitech.epicture.adapters.SearchAdapter._ViewHolder, kotlin.Int)/position">position</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="on-create-view-holder.html">onCreateViewHolder</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onCreateViewHolder</span><span class="symbol">(</span><span class="identifier" id="com.epitech.epicture.adapters.SearchAdapter$onCreateViewHolder(android.view.ViewGroup, kotlin.Int)/parent">parent</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/view/ViewGroup.html"><span class="identifier">ViewGroup</span></a><span class="symbol">, </span><span class="identifier" id="com.epitech.epicture.adapters.SearchAdapter$onCreateViewHolder(android.view.ViewGroup, kotlin.Int)/viewType">viewType</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="_-view-holder/index.html"><span class="identifier">_ViewHolder</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -17,6 +17,9 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 
+/***
+ * Object containing classes relating to the Imgur api
+ */
 object ImgurServices {
 
     var preferences: SharedPreferences? = null
@@ -31,6 +34,7 @@ object ImgurServices {
 
     /***
      * Request login data from imgur
+     * @param context
      */
     fun requestLogin(context: Context) {
         Log.d("DEBUG", "Login is being requested")
@@ -45,6 +49,7 @@ object ImgurServices {
 
     /***
      * Removes login data, acts like a disconnect
+     * @param context
      */
     fun pruneLogin(context: Context) {
         preferences = context.getSharedPreferences("data", 0)
@@ -54,6 +59,8 @@ object ImgurServices {
 
     /***
      * Saves the login data we get from the OAuth Query
+     * @param intent
+     * @param context
      */
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     fun saveLogin(intent: Intent, context: Context) {
@@ -76,6 +83,7 @@ object ImgurServices {
     /*** Verifies if the login data exists
      * @param resolve when it succeed
      * @param reject when it fails
+     * @param context
      */
     fun verifyLogin(resolve: () -> Unit, reject: () -> Unit, context: Context) {
         Log.d("DEBUG", "Login is being verified")
@@ -103,6 +111,7 @@ object ImgurServices {
      * Refreshes the login data using the refresh token
      * @param resolve when it succeed
      * @param reject when it fails
+     * @param context
      */
     fun refreshLogin(resolve: () -> Unit, reject: () -> Unit, context: Context) {
         Log.d("DEBUG", "Refreshing login")
@@ -153,6 +162,10 @@ object ImgurServices {
 
     /***
      * Get images
+     * @param context
+     * @param success returns a model containing the Avatar
+     * @param failure returns a java error
+     * @param page (default = "0")
      */
     fun getImages(context: Context, success: (ImgurModels<ArrayList<Image>>) -> Unit, failure: (Exception) -> Unit, page : String = "0") {
         preferences = context.getSharedPreferences("data", 0)
@@ -189,6 +202,13 @@ object ImgurServices {
 
     /***
      * Search in the imgur api with query
+     * @param context
+     * @param success returns a model containing the Avatar
+     * @param failure returns a java error
+     * @param searchQuery
+     * @param page (default = "0")
+     * @param sort (default = "time")
+     * @param window (default = "all")
      */
     fun search(context: Context, success: (ImgurModels<ArrayList<JsonElement>>) -> Unit, failure: (Exception) -> Unit,
                searchQuery: String, page: String = "0", sort: String = "time", window: String = "all") {
@@ -228,7 +248,11 @@ object ImgurServices {
     }
 
     /***
-     * Get favorites
+     * Get user's favorites
+     * @param context
+     * @param success returns a model containing the Avatar
+     * @param failure returns a java error
+     * @param page
      */
     fun getFavorites(context: Context, success: (ImgurModels<ArrayList<JsonElement>>) -> Unit, failure: (Exception) -> Unit, page: String) {
         preferences = context.getSharedPreferences("data", 0)
@@ -266,6 +290,7 @@ object ImgurServices {
 
     /***
      * Get the logged user avatar (authenticated)
+     * @param context
      * @param success returns a model containing the Avatar
      * @param failure returns a java error
      */
@@ -308,8 +333,8 @@ object ImgurServices {
 
     /***
      * Start a OkHttp3 request asynchronously
-     * @success returns the JsonElement containing the data
-     * @failure returns an java exception
+     * @param success returns the JsonElement containing the data
+     * @param failure returns an java exception
      */
     private fun asynchronousRequest(request: Request, success: (JsonElement) -> Unit, failure: (Exception) -> Unit) {
         Log.d("DEBUG", "Asynchronous Request")
@@ -339,6 +364,14 @@ object ImgurServices {
         })
     }
 
+    /***
+     * Allows to unfavorite/favorite an image/album thanks to its id
+     * @param context
+     * @param success returns a model containing the Avatar
+     * @param failure returns a java error
+     * @param id
+     * @param type
+     */
     fun changeFavoriteState(context: Context, success: (JsonElement) -> Unit, failure: (Exception) -> Unit, id: String, type: Type) {
         preferences = context.getSharedPreferences("data", 0)
 
@@ -386,6 +419,16 @@ object ImgurServices {
         asynchronousRequest(request, success, failure)
     }
 
+    /***
+     * function to upload a bitmap with a custom text/description
+     * @param context
+     * @param success returns the JsonElement containing the data
+     * @param failure returns an java exception
+     * @param name
+     * @param title
+     * @param description
+     * @param image
+     */
     fun upload(context: Context, success: (JsonElement) -> Unit, failure: (Exception) -> Unit, name: String, title: String, description: String, image: Bitmap) {
         preferences = context.getSharedPreferences("data", 0)
 

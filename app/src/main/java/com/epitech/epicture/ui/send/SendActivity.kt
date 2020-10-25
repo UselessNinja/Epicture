@@ -9,6 +9,9 @@ import com.epitech.epicture.ImgurServices
 import com.epitech.epicture.R
 import kotlinx.android.synthetic.main.activity_send.*
 
+/***
+ * Class for the Activity containing the Upload/Send feature
+ */
 class SendActivity : AppCompatActivity() {
 
     private lateinit var bitmap: Bitmap

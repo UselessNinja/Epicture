@@ -5,6 +5,9 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.epitech.epicture.MainActivity
 
+/***
+ * Generic class for the Fragments with the recycler views
+ */
 open class RecyclerViewFragment : Fragment() {
 
     lateinit var searchView : SearchView

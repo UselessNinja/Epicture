@@ -17,6 +17,9 @@ import com.epitech.epicture.jsonmodels.ImgurPost
 import com.epitech.epicture.ui.RecyclerViewFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
+/***
+ * Class containing everything related to the Gallery
+ */
 class GalleryFragment : RecyclerViewFragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -56,6 +59,9 @@ class GalleryFragment : RecyclerViewFragment() {
         createRecyclerView()
     }
 
+    /***
+     * Creates a recyclerview inside of the fragement and initialize the refresh feature
+     */
     private fun createRecyclerView () {
         adapter = GalleryAdapter(context!!, images)
         recyclerView = root.findViewById(R.id.recycler_view)
@@ -70,6 +76,9 @@ class GalleryFragment : RecyclerViewFragment() {
         }
     }
 
+    /***
+     * removes unreadable images from the dataset
+     */
     private fun pruneUnreadableImages() {
         if (images.isEmpty()) {
             recycler_view.visibility = View.GONE
@@ -80,6 +89,9 @@ class GalleryFragment : RecyclerViewFragment() {
         }
     }
 
+    /***
+     * loads new pages
+     */
     private fun loadPages() {
         if (loading)
             return
@@ -98,6 +110,9 @@ class GalleryFragment : RecyclerViewFragment() {
             }
     }
 
+    /***
+     * instantiate the infinite scroll feature
+     */
     private fun infiniteScroll() { recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -121,6 +136,10 @@ class GalleryFragment : RecyclerViewFragment() {
     })
     }
 
+    /***
+     * populates the dataset for a specific page to be used in the recyclerview using the imgur api
+     * @param page
+     */
     private fun getImagesFromPage(page: Int, callback: () -> Unit = {}) {
         ImgurServices.getImages( requireContext(), { resp ->
             try {

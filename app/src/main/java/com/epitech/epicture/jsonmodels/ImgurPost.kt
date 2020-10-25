@@ -6,6 +6,9 @@ import com.google.gson.Gson
 import com.google.gson.JsonElement
 import kotlinx.android.parcel.Parcelize
 
+/***
+ * Json model for an unified data format for an Imgur Post
+ */
 @Parcelize
 data class ImgurPost (
     val id: String?,
@@ -21,20 +24,34 @@ data class ImgurPost (
     val type: Type
 ) : Parcelable
 
+/***
+ * enum for the filters
+ */
 enum class FilterType {
     NONE,
     IMAGE,
     VIDEO
 }
 
+/***
+ * enum for the type of imgur formats
+ */
 enum class Type {
     ImagePost,
     Album,
     Image
 }
 
+/***
+ * Class containing functions to convert jsonElements and Images into ImgurPosts
+ */
 class Converter {
     companion object {
+        /***
+         * function for converting json responses for imgur into an usuable generic format
+         * @param element JsonElement to be converted
+         * @return ImgurPost
+         */
         fun jsonElementToImgurPost(element: JsonElement): ImgurPost {
             if (element.asJsonObject.has("images")) {
                 val content = Gson().fromJson<Album>(element, Album::class.java)
@@ -71,6 +88,11 @@ class Converter {
                 )
             }
         }
+        /***
+         * function for converting a single image into an usuable generic format
+         * @param element Image to be converted
+         * @return ImgurPost
+         */
         fun imageToImgurPost(element: Image): ImgurPost {
             return ImgurPost(
                 element.id,

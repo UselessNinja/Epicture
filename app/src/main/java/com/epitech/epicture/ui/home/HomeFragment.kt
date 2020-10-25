@@ -17,6 +17,9 @@ import com.epitech.epicture.jsonmodels.ImgurPost
 import com.epitech.epicture.ui.RecyclerViewFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
+/***
+ * Class containing everything related to the Home and Search Fragment
+ */
 class HomeFragment : RecyclerViewFragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -27,6 +30,9 @@ class HomeFragment : RecyclerViewFragment() {
     private var page: Int = 0
     private var query: String = "cats"
 
+    /***
+     * initializing the searching feature
+     */
     private var searching: Boolean = false
         set(value) {
             val old = field
@@ -53,6 +59,9 @@ class HomeFragment : RecyclerViewFragment() {
         createRecyclerView()
     }
 
+    /***
+     * Creates a recyclerview inside of the fragement and initialize the refresh feature
+     */
     private fun createRecyclerView () {
         adapter = SearchAdapter(context!!, images)
         recyclerView = root.findViewById(R.id.recycler_view)
@@ -68,6 +77,9 @@ class HomeFragment : RecyclerViewFragment() {
         }
     }
 
+    /***
+     * removes unreadable images from the dataset
+     */
     private fun pruneUnreadableImages() {
         if (images.isEmpty()) {
             recycler_view.visibility = View.GONE
@@ -78,6 +90,9 @@ class HomeFragment : RecyclerViewFragment() {
         }
     }
 
+    /***
+     * loads new pages
+     */
     private fun loadPages() {
         if (loading)
             return
@@ -96,6 +111,9 @@ class HomeFragment : RecyclerViewFragment() {
             }
     }
 
+    /***
+     * instantiate the infinite scroll feature
+     */
     private fun infiniteScroll() { recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -119,6 +137,11 @@ class HomeFragment : RecyclerViewFragment() {
         })
     }
 
+    /***
+     * populates the dataset for as specific page and search query to be used in the recyclerview using the imgur api
+     * @param page
+     * @param searchQuery (default value = "cats")
+     */
     private fun getImagesFromPage(page: Int, searchQuery : String = "cats", callback: () -> Unit = {}) {
         ImgurServices.search( requireContext(), { resp ->
             try {

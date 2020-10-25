@@ -1,5 +1,8 @@
 package com.epitech.epicture.jsonmodels
 
+/***
+ * Json model for Imgurs' Image Post
+ */
 data class ImagePost (
     val id : String?,
     val link: String?,

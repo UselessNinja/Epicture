@@ -1,6 +1,5 @@
 package com.epitech.epicture.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -25,8 +24,10 @@ import com.epitech.epicture.ui.ZoomActivity
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler
-import org.w3c.dom.Text
 
+/***
+ * Adapter for the RecyclerView of the Favorites and Gallery Fragments
+ */
 class GalleryAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : RecyclerView.Adapter<GalleryAdapter._ViewHolder>(), Filterable {
 
     var images = gallery
@@ -77,6 +78,9 @@ class GalleryAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : 
         }
     }
 
+    /***
+     * Handler for making custom thumbnails for .mp4 images/albums
+     */
     inner class VideoRequestHandler : RequestHandler() {
 
         override fun canHandleRequest(data: Request?): Boolean {
@@ -119,6 +123,10 @@ class GalleryAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : 
             return Result(bitmapOverlay!!, Picasso.LoadedFrom.MEMORY)
         }
     }
+
+    /***
+     * Custom filter for the recyclerview
+     */
     fun filter(type: FilterType) {
         val filter: (ImgurPost) -> Boolean = when (type) {
             FilterType.NONE -> {
@@ -166,7 +174,7 @@ class GalleryAdapter(val context: Context, val gallery: ArrayList<ImgurPost>) : 
 
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
                 try {
-                    images = (filterResults.values as ArrayList<ImgurPost>)
+                    images = filterResults.values as ArrayList<ImgurPost>
                     notifyDataSetChanged()
                 } catch (e: Exception) {
 

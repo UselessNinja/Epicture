@@ -1,6 +1,5 @@
 package com.epitech.epicture
 
-import com.epitech.epicture.MainActivity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -11,6 +10,9 @@ import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat.startActivity
 import com.epitech.epicture.ui.send.SendActivity
 
+/***
+ * Object containing Upload related functions
+ */
 object Upload {
 
     private const val IMAGE = 0
@@ -19,6 +21,10 @@ object Upload {
     var preferences: SharedPreferences? = null
     var editor: SharedPreferences.Editor? = null
 
+    /***
+     * Allows the user to get an image from the android's gallery
+     * @param activity
+     */
     fun getImageFromGallery(activity: Activity) {
         val intent = Intent()
         intent.type = "image/*"
@@ -26,6 +32,10 @@ object Upload {
         startActivityForResult(activity, Intent.createChooser(intent, "Select Picture"), IMAGE, null)
     }
 
+    /***
+     * Allows the user to get an image from the android's camera
+     * @param activity
+     */
     fun getImageFromCamera(activity: Activity) {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.also { Intent ->
@@ -35,6 +45,11 @@ object Upload {
         }
     }
 
+    /***
+     * Private function that starts the SendActivity for upload purposes
+     * @param context
+     * @param bitmap
+     */
     private fun startUploadFromBitmap(context: Context, bitmap: Bitmap) {
         val filename = "temp.png"
         val fs = context.openFileOutput(filename, Context.MODE_PRIVATE)

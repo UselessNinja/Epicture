@@ -38,6 +38,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var searchView: SearchView
     private lateinit var _menu: Menu
 
+    /***
+     * Inner class used for managing the App_bar and initializing it
+     * @param actionMenu
+     * @param supportActionBar
+     */
     inner class MenuManager(actionMenu: Menu, val supportActionBar: androidx.appcompat.app.ActionBar?) {
 
         val search: SearchView = actionMenu.findItem(R.id.app_bar_search).actionView as SearchView
@@ -54,6 +59,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    /***
+     * Getter for the MenuManager which allows the fragments to access the app_bar
+     * @return MenuManager
+     */
     fun getMenuManager() : MenuManager {
         Log.d("sv", "menu get")
         return MenuManager(_menu, supportActionBar)
@@ -71,18 +80,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         actionBarDrawerToggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-
-        /* val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener {
-            var fragmentManager: FragmentManager = supportFragmentManager
-            var fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.setCustomAnimations(R.anim.design_bottom_sheet_slide_in, R.anim.design_bottom_sheet_slide_out)
-            fragmentTransaction.replace(R.id.nav_host_fragment, FavoritesFragment())
-            fragmentTransaction.commit()
-            /* view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show() */
-        } */
 
         drawerLayout = findViewById(R.id.drawer_layout)
 
@@ -143,6 +140,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    /***
+     * Allows to populate the user profile in the drawer using the imgur api
+     * @param navView
+     */
     private fun drawerProfile(navView : NavigationView) {
         val hView : View = navView.getHeaderView(0)
         val navText : TextView = hView.findViewById(R.id.nav_name)
@@ -202,9 +203,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onActivityResult(requestCode, resultCode, data)
         Upload.onActivityResult(this, requestCode, resultCode, data)
     }
-
-    /***
-     * Documentation pour quelqu'un qui doit reprendre le projet
-     */
 }
 

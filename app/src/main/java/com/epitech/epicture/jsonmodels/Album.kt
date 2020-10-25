@@ -1,5 +1,8 @@
 package com.epitech.epicture.jsonmodels
 
+/***
+ * Json model for Imgurs' Albums
+ */
 data class Album (
     val id : String?,
     var link: String?,
